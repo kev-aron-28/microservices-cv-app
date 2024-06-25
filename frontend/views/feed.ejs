@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feed de Usuarios</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="my-5">
+            <h1 class="text-center">Feed de Usuarios</h1>
+        </header>
+        
+        <section class="my-5">
+            <h2>Usuarios que buscan trabajo</h2>
+            <div class="row">
+                <% users.forEach(user => { %>
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title"><%= user.name %></h5>
+                                <p class="card-text"><strong>Teléfono:</strong> <%= user.phone %></p>
+                                <p class="card-text"><strong>Email:</strong> <%= user.email %></p>
+                                <p class="card-text"><strong>Descripción:</strong> <%= user.description %></p>
+                                <a href="/cv/<%= user.id %>" class="btn btn-primary">Ver Detalles</a>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        </section>
+
+        <section class="my-5">
+            <h2>Usuarios Nuevos</h2>
+            <div class="row">
+                <% newUsers.forEach(newUser => { %>
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title"><%= newUser.name %></h5>
+                                <p class="card-text"><strong>Teléfono:</strong> <%= newUser.phone %></p>
+                                <p class="card-text"><strong>Email:</strong> <%= newUser.email %></p>
+                                <p class="card-text"><strong>Descripción:</strong> <%= newUser.description %></p>
+                                <a href="/cv/<%= newUser.id %>" class="btn btn-primary">Ver Detalles</a>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        </section>
+    </div>
+
+    <footer class="text-center py-4">
+        <p>&copy; 2024 Promociona tu CV. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

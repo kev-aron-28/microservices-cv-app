@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://admin:admin@db/cv?schema=public&connect_timeout=30&pool_timeout=30&socket_timeout=30"
+}
+
+model User {
+  id String @id
+  email     String    @unique
+  password  String
+  role      String    // Puede ser "employee" o "employer"
+  employee  Employee?
+  employer  Employer?
+}
+
+model Employee {
+  userId    String @unique
+  user      User @relation(fields: [userId], references: [id])
+  name      String
+  age       Int
+  connects Connect[]
+  cvId String
+  cv CV?
+}
+
+model CV {
+  id String @id
+  name String
+  phone String
+  email String
+  description String
+  skills Json
+  workHistory Json
+  education Json
+  employeeId String @unique
+  employee Employee @relation(fields: [employeeId], references: [userId])
+}
+
+model Employer {
+  userId    String @unique
+  user      User @relation(fields: [userId], references: [id])
+  companyName String
+  industry   String
+  description String
+  connects Connect[]
+}
+
+model Connect {
+  employeeId String
+  employerId String
+  connectedAt DateTime @default(now())
+  employee    Employee @relation(fields: [employeeId], references: [userId])
+  employer    Employer @relation(fields: [employerId], references: [userId])
+  @@unique([employeeId, employerId]) 
+}

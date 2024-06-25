@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .jumbotron {
+            background-color: #343a40;
+            color: #ffffff;
+            padding: 4rem 2rem;
+            border-radius: 0;
+        }
+        .features {
+            background-color: #ffffff;
+            padding: 4rem 2rem;
+            margin-top: 4rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #007bff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            color: #ffffff;
+            margin: 0 auto 1rem auto;
+        }
+        .form-container {
+            background-color: #ffffff;
+            padding: 2rem;
+            margin-top: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="jumbotron text-center mt-5">
+            <h1 class="display-4">Promociona tu CV de manera efectiva</h1>
+            <p class="lead">Crea, personaliza y comparte tu CV con empleadores potenciales.</p>
+            <a class="btn btn-primary btn-lg" href="#features" role="button">Más información</a>
+        </header>
+
+        <!-- Formulario de Inicio de Sesión -->
+        <section id="login" class="features text-center">
+            <h2>Iniciar Sesión</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-6 form-container">
+                    <form action="/login" method="POST">
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Correo Electrónico" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Iniciar Sesión</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Formulario de Registro -->
+        <section id="register" class="features text-center">
+            <h2>Registrarse</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-6 form-container">
+                    <form action="/register" method="POST">
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Correo Electrónico" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="userType">Selecciona tu tipo de usuario:</label>
+                            <select class="form-control" id="userType" name="userType" required>
+                                <option value="">Selecciona una opción</option>
+                                <option value="employee">Empleado</option>
+                                <option value="employer">Empleador</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Registrarse</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="text-center mt-5">
+            <h2 class="mb-4">Características</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="feature-icon">1</div>
+                    <h3>Creación fácil</h3>
+                    <p>Genera tu CV de manera rápida y sencilla con nuestra herramienta intuitiva.</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-icon">2</div>
+                    <h3>Personalización</h3>
+                    <p>Personaliza tu CV con una variedad de plantillas y diseños profesionales.</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-icon">3</div>
+                    <h3>Compartir</h3>
+                    <p>Comparte tu CV fácilmente con empleadores a través de un enlace único.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="text-center py-4 bg-dark text-white mt-5">
+        <p>&copy; 2024 Promociona tu CV. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

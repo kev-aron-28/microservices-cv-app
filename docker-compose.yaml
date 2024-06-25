@@ -1,0 +1,61 @@
+version: '3'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"  # RabbitMQ main port
+      - "15672:15672"  # RabbitMQ management UI
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq  # Persist RabbitMQ data
+
+  db:
+    image: postgres:14.1-alpine
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=cv
+    ports:
+      - '5434:5432'
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  memcached:
+    image: memcached:latest
+    ports:
+      - "11211:11211"
+  frontend:
+    build:
+      dockerfile: Dockerfile
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend/:/app
+      - /app/node_modules
+    depends_on:
+      - rabbitmq
+      - db
+    restart: always
+  userworker:
+    build:
+      dockerfile: Dockerfile
+      context: ./users
+    volumes:
+      - ./users/:/userworker
+    depends_on:
+      - rabbitmq
+      - db
+    restart: always
+    ports:
+      - "3001:3001"
+  feed:
+    build:
+      dockerfile: Dockerfile
+      context: ./feed
+    volumes:
+      - ./feed/:/feed
+      - /feed/node_modules
+volumes:
+  rabbitmq_data:
+  postgres_data:

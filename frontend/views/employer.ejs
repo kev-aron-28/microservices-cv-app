@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Empresa - <%= employer.companyName %></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <!-- Encabezado con el nombre de la empresa -->
+        <div class="card mb-5">
+            <div class="card-header">
+                <h2 class="text-center"><%= employer.companyName %></h2>
+            </div>
+            <div class="card-body">
+                <p class="card-text"><strong>Industria:</strong> <%= employer.industry %></p>
+                <p class="card-text"><strong>Descripción:</strong> <%= employer.description %></p>
+            </div>
+        </div>
+        
+        <!-- Lista de personas conectadas -->
+        <h3>Personas Conectadas</h3>
+        <ul class="list-group">
+        </ul>
+    </div>
+
+    <footer class="text-center py-4">
+        <p>&copy; 2024 Promociona tu CV. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

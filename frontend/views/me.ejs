@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil <%= cv.name %></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="my-5">
+            <h1 class="text-center">Detalle del CV</h1>
+        </header>
+        
+        <section class="my-5">
+            <h2><%= cv.name %></h2>
+            <p><strong>Teléfono:</strong> <%= cv.phone %></p>
+            <p><strong>Email:</strong> <%= cv.email %></p>
+            <p><strong>Descripción:</strong> <%= cv.description %></p>
+            
+            <h3>Habilidades</h3>
+            <ul>
+                <% Object.keys(cv.skills).forEach(key => { %>
+                    <li><strong><%= key %>:</strong> <%= cv.skills[key] %></li>
+                <% }); %>
+            </ul>
+            
+            <h3>Historial Laboral</h3>
+            <ul>
+                <% Object.keys(cv.workHistory).forEach(key => { %>
+                    <li><strong><%= key %>:</strong> <%= cv.workHistory[key] %></li>
+                <% }); %>
+            </ul>
+            
+            <h3>Educación</h3>
+            <ul>
+                <% Object.keys(cv.education).forEach(key => { %>
+                    <li><strong><%= key %>:</strong> <%= cv.education[key] %></li>
+                <% }); %>
+            </ul>
+        </section>
+        
+        <div class="text-center my-5">
+            <a href="http://localhost:3001/pdf/<%=cv.id%>.pdf" class="btn btn-primary" target="_blank">Ver CV en PDF</a>
+        </div>
+    </div>
+
+    <footer class="text-center py-4">
+        <p>&copy; 2024 Promociona tu CV. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

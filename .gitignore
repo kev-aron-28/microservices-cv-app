@@ -1,0 +1,33 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn.lock
+
+# Mac OS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+
+# Build
+/build/
+/dist/
+
+# Logs
+/logs/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Docker
+.dockerignore
+
+# Test coverage
+coverage/
+
+# Dependencies
+package-lock.json
