@@ -9,8 +9,9 @@
 </head>
 <body>
     <div class="container">
-        <header class="my-5">
-            <h1 class="text-center">Feed de Usuarios</h1>
+        <header class="my-5 text-center">
+            <h1>Feed de Usuarios</h1>
+            <a href="/me">Perfil</a>
         </header>
         
         <section class="my-5">
@@ -24,7 +25,13 @@
                                 <p class="card-text"><strong>Teléfono:</strong> <%= user.phone %></p>
                                 <p class="card-text"><strong>Email:</strong> <%= user.email %></p>
                                 <p class="card-text"><strong>Descripción:</strong> <%= user.description %></p>
-                                <a href="/cv/<%= user.id %>" class="btn btn-primary">Ver Detalles</a>
+                                <a href="http://localhost:3001/pdf/<%= user.id %>.pdf" class="btn btn-primary">CV</a>
+                                
+                                <!-- Formulario para conectar usuarios -->
+                                <form method="POST" action="/connect">
+                                    <input type="hidden" name="employeeId" value="<%= user.employeeId %>">
+                                    <button type="submit" class="btn btn-success mt-2">Conectar</button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -43,7 +50,13 @@
                                 <p class="card-text"><strong>Teléfono:</strong> <%= newUser.phone %></p>
                                 <p class="card-text"><strong>Email:</strong> <%= newUser.email %></p>
                                 <p class="card-text"><strong>Descripción:</strong> <%= newUser.description %></p>
-                                <a href="/cv/<%= newUser.id %>" class="btn btn-primary">Ver Detalles</a>
+                                <a href="http://localhost:3001/pdf/<%= newUser.id %>.pdf" class="btn btn-primary">CV</a>
+                                
+                                <!-- Formulario para conectar usuarios -->
+                                <form method="POST" action="/connect">
+                                    <input type="hidden" name="employeeId" value="<%= user.employeeId %>">
+                                    <button type="submit" class="btn btn-success mt-2">Conectar</button>
+                                </form>
                             </div>
                         </div>
                     </div>

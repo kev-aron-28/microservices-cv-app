@@ -10,6 +10,7 @@
 <body>
     <div class="container mt-5">
         <!-- Encabezado con el nombre de la empresa -->
+         <a href="/feed">Feed</a>
         <div class="card mb-5">
             <div class="card-header">
                 <h2 class="text-center"><%= employer.companyName %></h2>
@@ -22,8 +23,17 @@
         
         <!-- Lista de personas conectadas -->
         <h3>Personas Conectadas</h3>
-        <ul class="list-group">
+        <ul class="list-group" id="connectedUsersList">
+            <% connectedUsers.forEach(user => { %>
+                <li class="list-group-item">
+                    <h5><%= user.employee.name %></h5>
+                    <p><strong>Email:</strong> <%= user.employee.cv.name %></p>
+                    <p><strong>Descripción:</strong> <%= user.employee.cv.description %></p>
+                    <a href="http://localhost:3001/pdf/<%= user.employee.cvId %>.pdf" class="btn btn-primary">Ver CV</a>
+                </li>
+            <% }); %>
         </ul>
+    </div>
     </div>
 
     <footer class="text-center py-4">

@@ -7,7 +7,6 @@ const { v4: uuidv4 } = require('uuid');
 
 const { PrismaClient } = require('@prisma/client');
 const initializePassport = require('./auth/passport-config');
-const e = require('express');
 
 
 const app = express();
@@ -21,6 +20,11 @@ let connection;
 const RABBIT_HOST = process.env.RABBITMQ_HOST || 'localhost';
 const QUEUE_NAME = 'user_queue';
 
+const memcachedHost = process.env.MEMCACHED_HOST || 'memcached';
+const memcachedPort = process.env.MEMCACHED_PORT || '11211';
+
+const Memcached = require('memcached');
+const memcached = new Memcached(`${memcachedHost}:${memcachedPort}`);
 
 const startRabbitMQ = async () => {
   try {
@@ -49,7 +53,6 @@ app.use(express.static('public'));
 
 
 function ensureAuthenticated(req, res, next) {
-  console.log(req.user)
   if (req.isAuthenticated()) {
     return next();
   }
@@ -94,7 +97,6 @@ app.post('/register', async (req, res) => {
 });
 
 
-
 app.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -123,7 +125,6 @@ app.post('/login', async (req, res) => {
     res.redirect('/');
   }
 });
-
 
 app.get('/employer/create', ensureAuthenticated, (req, res) => res.render('create-employer'))
 app.post('/employer/create', ensureAuthenticated, async (req, res) => {
@@ -164,29 +165,66 @@ app.get('/me', ensureAuthenticated, async (req, res) => {
     const employer = await prisma.employer.findUnique({
       where: {
         userId: user.id
+      },
+      include: {
+        connects: {
+          include: {
+            employee:{
+              include: {
+                cv: true
+              }
+            }
+          }
+        }
       }
     })
 
+    console.log(employer.connects[0])
     res.render('employer', {
-      employer
+      employer,
+      connectedUsers: employer.connects || []
     });
   }
-
-})
+});
 
 
 app.get('/feed', ensureAuthenticated, async (req, res) => {
   try {
     const users = await prisma.cV.findMany({});
+    let newUsers = [];
+
+    const getMemcachedData = () => {
+      return new Promise((resolve, reject) => {
+        memcached.get('cvs', (err, data) => {
+          if (err) {
+            console.log(err);
+            return reject(new Error('Something failed'));
+          }
+          resolve(data);
+        });
+      });
+    };
+
+    try {
+      const data = await getMemcachedData();
+      if (data) {
+        newUsers = JSON.parse(data);
+      }
+    } catch (error) {
+      console.log('Error fetching data from Memcached:', error.message);
+    }
 
     res.render('feed', {
       users,
-      newUsers: []
+      newUsers
     });
+
   } catch (error) {
+    console.log(error)
     return res.render('error', {
       message: 'Ocurrio un error'
     });
+
   }
 });
 
@@ -204,11 +242,9 @@ app.post('/cv/create', ensureAuthenticated, async (req, res) => {
       message: 'No se pudo crear el CV'
     });
 
-    const channel = await connection.createChannel();
-    await channel.assertQueue(QUEUE_NAME);
 
     const cvId = uuidv4();
-    await prisma.cV.create({
+    const cv = await prisma.cV.create({
       data: {
         id: cvId,
         name,
@@ -232,24 +268,31 @@ app.post('/cv/create', ensureAuthenticated, async (req, res) => {
         }
       }
     });
-  
 
-    const message = {
-      cvId,
-      name, 
-      age,  
-      phone, 
-      email, 
-      description, 
-      skills, 
-      workHistory, 
-      education,
-      type: 'cv_created'
-    }    
     
+    const channel = await connection.createChannel();
+    await channel.assertQueue(QUEUE_NAME);
+
     channel.sendToQueue(QUEUE_NAME, Buffer.from(JSON.stringify(message)));
+
+    memcached.get('cvs', (err, data) => {
+      if (err) {
+        console.error('Error al obtener datos de Memcached:', err);
+        return res.render('error', {
+          message: 'No se pudo crear el CV'
+        });
+      }
+
+      const cvs = data ? JSON.parse(data) : [];
+      cvs.push(cv);
+
+      memcached.set('cvs', JSON.stringify(cvs), 3600, (err) => {
+        if (err) {
+          console.error('Error al guardar datos en Memcached:', err);
+        }
+      });
+    });
     res.redirect('/me');
-    
   } catch (error) {
     console.log(error);
     res.render('error', {
@@ -257,6 +300,22 @@ app.post('/cv/create', ensureAuthenticated, async (req, res) => {
     });
   }
 });
+
+
+app.post('/connect', ensureAuthenticated, async (req, res) => {
+  const { employeeId } = req.body;
+  console.log(employeeId, req.user);
+  await prisma.connect.create({
+    data: {
+      connectedAt: new Date().toISOString(),
+      employeeId,
+      employerId: req.user.id
+    }
+  });
+
+  res.redirect('/me');
+});
+
 
 app.listen(port, async () => {
   await startRabbitMQ();

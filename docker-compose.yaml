@@ -49,13 +49,6 @@ services:
     restart: always
     ports:
       - "3001:3001"
-  feed:
-    build:
-      dockerfile: Dockerfile
-      context: ./feed
-    volumes:
-      - ./feed/:/feed
-      - /feed/node_modules
 volumes:
   rabbitmq_data:
   postgres_data:
