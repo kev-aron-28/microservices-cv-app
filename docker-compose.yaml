@@ -41,14 +41,15 @@ services:
     build:
       dockerfile: Dockerfile
       context: ./users
-    volumes:
-      - ./users/:/userworker
     depends_on:
       - rabbitmq
       - db
     restart: always
     ports:
       - "3001:3001"
+    volumes:
+      - ./users/:/userworker
+      - /userworker/node_modules
 volumes:
   rabbitmq_data:
   postgres_data:
