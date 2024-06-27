@@ -13,5 +13,7 @@ RUN npm install
 # Copia el resto de la aplicación
 COPY . .
 
+RUN npx prisma migrate dev --name init  
+
 # Comando para iniciar la aplicación
 CMD ["npm", "run", "start"]
